@@ -32,7 +32,7 @@ def hiddenlayer(x_input, input_size, output_size):
     return tf.matmul(x_input, W) + b
 
 with tf.variable_scope('Initialization'):
-    n_epoch, n_hidden = 1000000, 10
+    n_epoch, n_hidden = 100000000, 10
     n_row, n_col = np.shape(x_train)
     n_row_test, n_col_test = np.shape(x_test)
     n_input = n_row
@@ -43,7 +43,7 @@ with tf.variable_scope('Initialization'):
 
 
 loss_function = tf.reduce_sum(tf.square(y_pred - y_input) / (2 * n_input))
-train = tf.train.AdamOptimizer(0.008).minimize(loss_function)
+train = tf.train.GradientDescentOptimizer(0.0002).minimize(loss_function)
 
 loss_history = []
 result = []
@@ -54,8 +54,6 @@ with tf.Session() as sess:
         loss_history.append(loss)
         print("Epoch: ", epoch, ", loss: ", loss)
 
-        if loss <= 10:
-            break
     print(n_row_test, n_col_test)
     x_test = x_test.reshape(n_row_test, n_col_test)
     print(np.shape(x_test))
